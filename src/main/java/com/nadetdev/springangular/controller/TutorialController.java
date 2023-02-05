@@ -99,12 +99,24 @@ public class TutorialController {
 
 	@DeleteMapping("/tutorials/{id}")
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
-		return null;
+		try {
+			tutorialRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("/tutorials")
 	public ResponseEntity<HttpStatus> deleteAllTutorial() {
-		return null;
+		try {
+			tutorialRepository.deleteAll();
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }
