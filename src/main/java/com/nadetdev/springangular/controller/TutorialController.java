@@ -80,8 +80,22 @@ public class TutorialController {
 
 	@PutMapping("/tutorials/{id}")
 	public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-		return null;
+		
+		Optional<Tutorial> existTutorial = tutorialRepository.findById(id);
+		
+		if(existTutorial.isPresent()) {
+			Tutorial editTutorial = existTutorial.get();
+			
+			editTutorial.setTitle(tutorial.getTitle());
+			editTutorial.setDescription(tutorial.getDescription());
+			editTutorial.setPublished(tutorial.isPublished());
+			
+			return new ResponseEntity<>(tutorialRepository.save(editTutorial), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
+	
 
 	@DeleteMapping("/tutorials/{id}")
 	public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
